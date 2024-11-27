@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+  namespace: todoapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: minhbui1/profile-svc
+          ports:
+            - containerPort: 3200
+            - containerPort: 3201
+          env:
+            - name: DB_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: user-service-config
+                  key: DB_DSN
+            - name: GIN_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: user-service-config
+                  key: GIN_PORT
+            - name: GRPC_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: user-service-config
+                  key: GRPC_PORT
+            - name: GRPC_AUTH_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: user-service-config
+                  key: GRPC_AUTH_ADDRESS
+

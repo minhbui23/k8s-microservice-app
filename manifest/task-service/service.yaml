@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-service
+  namespace: todoapp
+spec:
+  ports:
+    - name: gin
+      port: 3300
+      targetPort: 3300
+  selector:
+    app: task-service
