@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-ingress
+  namespace: todoapp
+spec:
+  type: NodePort
+  ports:
+  - port: 80      # Cổng mà Ingress lắng nghe (thường là 80 hoặc 443)
+    targetPort: 80 # Cổng mà Ingress controller lắng nghe
+    nodePort: 31000  # Cổng NodePort bạn muốn sử dụng
+  selector:
+    role: todo-ingress
