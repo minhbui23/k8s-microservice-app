@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: todoapp
 spec:
   replicas: 1
   selector:
@@ -13,7 +14,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: 561341012850.dkr.ecr.us-east-1.amazonaws.com/team62-frontend
+      - image: minhbui1/frontend
         name: frontend
         ports:
         - containerPort: 8080
@@ -35,22 +36,22 @@ spec:
               name: frontend
               key: TODOS_API_ADDRESS
         
-        # livenessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: fport
-        #   failureThreshold: 3
-        #   initialDelaySeconds: 30
-        #   periodSeconds: 15
-        #   successThreshold: 1
-        #   timeoutSeconds: 2
-        # readinessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: fport
-        #   failureThreshold: 3
-        #   initialDelaySeconds: 1
-        #   periodSeconds: 15
-        #   successThreshold: 1
-        #   timeoutSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /
+            port: fport
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
+        readinessProbe:
+          httpGet:
+            path: /
+            port: fport
+          failureThreshold: 3
+          initialDelaySeconds: 1
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
       restartPolicy: Always

@@ -1,13 +1,17 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend
+  namespace: todoapp
 spec:
   ingressClassName: "nginx"
   rules:
-  - host: frontend.__TEAM__.k8s-ctf.com
-    http:
+  - http:
       paths:
-        - backend:
-            serviceName: frontend
-            servicePort: 8080
+        - path: /todoapp
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend
+              port:
+                number: 8080

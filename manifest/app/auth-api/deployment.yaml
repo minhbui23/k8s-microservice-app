@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-api
+  namespace: todoapp
 spec:
   replicas: 1
   selector:
@@ -13,7 +14,7 @@ spec:
         app: auth-api
     spec:
       containers:
-      - image: 561341012850.dkr.ecr.us-east-1.amazonaws.com/team62-auth-api
+      - image: minhbui1/auth-api
         name: auth-api
         ports:
         - containerPort: 8081
@@ -34,22 +35,22 @@ spec:
             configMapKeyRef:
               name: auth-api
               key: USERS_API_ADDRESS
-        # livenessProbe:
-        #   httpGet:
-        #     path: /version
-        #     port: authport
-        #   failureThreshold: 3
-        #   initialDelaySeconds: 30
-        #   periodSeconds: 15
-        #   successThreshold: 1
-        #   timeoutSeconds: 2
-        # readinessProbe:
-        #   httpGet:
-        #     path: /version
-        #     port: authport
-        #   failureThreshold: 3
-        #   initialDelaySeconds: 1
-        #   periodSeconds: 15
-        #   successThreshold: 1
-        #   timeoutSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /version
+            port: authport
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
+        readinessProbe:
+          httpGet:
+            path: /version
+            port: authport
+          failureThreshold: 3
+          initialDelaySeconds: 1
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
       restartPolicy: Always

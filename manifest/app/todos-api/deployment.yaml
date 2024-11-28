@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todos-api
+  namespace: todoapp
 spec:
   replicas: 1
   selector:
@@ -15,7 +16,7 @@ spec:
         redis-access: "true"
     spec:
       containers:
-      - image: 561341012850.dkr.ecr.us-east-1.amazonaws.com/team62-todos-api
+      - image: minhbui1/todo-api
         name: todos-api
         ports:
         - containerPort: 8082

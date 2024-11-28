@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: users-api
+  namespace: todoapp
 spec:
   replicas: 1
   selector:
@@ -13,7 +14,7 @@ spec:
         app: users-api
     spec:
       containers:
-      - image: 561341012850.dkr.ecr.us-east-1.amazonaws.com/team62-users-api
+      - image: minhbui1/users-api
         name: users-api
         ports:
         - containerPort: 8083
@@ -29,20 +30,20 @@ spec:
             configMapKeyRef:
               name: users-api
               key: SERVER_PORT
-        # livenessProbe:
-        #   tcpSocket:
-        #     port: usersport
-        #   failureThreshold: 3
-        #   initialDelaySeconds: 30
-        #   periodSeconds: 15
-        #   successThreshold: 1
-        #   timeoutSeconds: 2
-        # readinessProbe:
-        #   tcpSocket:
-        #     port: usersport
-        #   failureThreshold: 3
-        #   initialDelaySeconds: 1
-        #   periodSeconds: 15
-        #   successThreshold: 1
-        #   timeoutSeconds: 2
+        livenessProbe:
+          tcpSocket:
+            port: usersport
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
+        readinessProbe:
+          tcpSocket:
+            port: usersport
+          failureThreshold: 3
+          initialDelaySeconds: 1
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
       restartPolicy: Always
