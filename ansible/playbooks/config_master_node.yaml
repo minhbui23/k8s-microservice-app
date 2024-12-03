@@ -1,0 +1,26 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  vars_files:
+    - env_variables
+  tasks:
+    - name: Pull Kubernetes images
+      shell: kubeadm config images pull
+
+    - name: Initialize Kubernetes cluster
+      shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }}
+      register: init_output
+
+    - name: Save kubeadm output to a file
+      copy:
+        content: "{{ kubeadm_output.stdout }}"
+        dest: /tmp/kubeadm_init_output.txt
+
+    - name: Configure kubectl for the master node
+      shell: |
+        mkdir -p $HOME/.kube
+        cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+
+    - name: Deploy Flannel CNI
+      command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml

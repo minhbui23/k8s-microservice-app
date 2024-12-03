@@ -1,0 +1,2 @@
+pod_network_cidr: 10.244.0.0/16
+token_file: /tmp/kubeadm_init_output.txt
