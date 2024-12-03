@@ -17,22 +17,22 @@ This repository contains Ansible playbooks to automate the deployment of a Kuber
 3. **Customize Environment Variables:**  Adjust settings in the `playbooks/env_variables` file as needed.
 4. **Run the Playbook:** 
 
-```bash
+    ```bash
     ansible-playbook -i hosts playbooks/settingup_k8s_cluster.yaml
     ansible-playbook -i hosts playbooks/config_master_node.yaml
     ansible-playbook -i hosts playbooks/config_worker_node.yaml
-```
+    ```
 
 ## Verify Deployment
 1. Check nodes status `kubectl get nodes`
 2. Deploy a Test pod 
-```bash
+    ```bash
     kubectl run nginx --image=nginx --labels="app=nginx"
     kubectl get pods 
-```
-if everything is OK, you can see information like this 
-```bash
-    NAME    READY   STATUS    RESTARTS   AGE
-    nginx   1/1     Running   0          18s
-```
+    ```
+    if everything is OK, you can see information like this 
+    ```bash
+        NAME    READY   STATUS    RESTARTS   AGE
+        nginx   1/1     Running   0          18s
+    ```
 
