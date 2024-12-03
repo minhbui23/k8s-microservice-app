@@ -1,7 +1,7 @@
 # Kubernetes Deployment for Multi-Service Application
 
 ## Overview
-This project deploys a multi-service application on a Kubernetes cluster. The application includes a frontend, multiple APIs, a Redis instance for caching, and a log message processor. The ingress traffic is managed by **NGINX Ingress Controller**, and the frontend is exposed via a **NGINX Ingress**.
+This project deploys a multi-service application on a Kubernetes cluster. The application includes a frontend, APIs, a Redis instance for caching, and a log message processor. The ingress traffic is managed by **NGINX Ingress Controller**, and the frontend is exposed via a **NGINX Ingress**. **Kubernetes Network Policies** to enhance security and control traffic flow within the cluster.
 
 ## Architecture 
 <div style="text-align: center;">
