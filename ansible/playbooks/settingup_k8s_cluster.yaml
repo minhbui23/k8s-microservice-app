@@ -1,15 +1,11 @@
 ---
 - hosts: all
   become: yes
-  vars_files:
-    - env_variables
   tasks:
     - name: Load required kernel modules
       shell: |
         modprobe overlay
         modprobe br_netfilter
-      args:
-        warn: false
 
     - name: Ensure kernel modules are loaded on boot
       copy:
@@ -41,10 +37,10 @@
         update_cache: yes
 
     - name: Add Docker GPG key
-      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/containerd.gpg
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/containerd.gpg 
 
     - name: Add Docker repository
-      shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
 
     - name: Update apt cache
       apt:

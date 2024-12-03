@@ -1,15 +1,9 @@
 ---
 - hosts: kubernetes-worker-nodes
   become: yes
-  tasks:
-    - name: Copy join command from master
-      fetch:
-        src: /tmp/kubeadm_init_output.txt
-        dest: /tmp/
-        flat: yes
-    
+  tasks:    
     - name: Extract kubeadm join command
-      shell: grep -i 'kubeadm join' /tmp/kubeadm_init_output.txt
+      shell: tail -n 2 /tmp/init_output.txt
       register: join_command
 
     - name: Execute kubeadm join command

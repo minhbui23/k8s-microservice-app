@@ -4,17 +4,20 @@
   vars_files:
     - env_variables
   tasks:
-    - name: Pull Kubernetes images
-      shell: kubeadm config images pull
-
     - name: Initialize Kubernetes cluster
       shell: kubeadm init --pod-network-cidr={{ pod_network_cidr }}
       register: init_output
 
     - name: Save kubeadm output to a file
       copy:
-        content: "{{ kubeadm_output.stdout }}"
-        dest: /tmp/kubeadm_init_output.txt
+        content: "{{ init_output.stdout }}"
+        dest: /tmp/init_output.txt
+
+    - name: Copy init file to node1
+      shell: scp  /tmp/init_output.txt  minhbui@172.16.1.135:/tmp/init_output.txt 
+
+    - name: Copy init file to node2
+      shell: scp  /tmp/init_output.txt  minhbui@172.16.1.137:/tmp/init_output.txt 
 
     - name: Configure kubectl for the master node
       shell: |
@@ -24,3 +27,4 @@
 
     - name: Deploy Flannel CNI
       command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
