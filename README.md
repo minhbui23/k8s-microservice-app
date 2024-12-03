@@ -17,7 +17,7 @@ This project deploys a multi-service application on a Kubernetes cluster. The ap
 - **NGINX Ingress Controller:** Manages routing of external traffic to services in the cluster.
 
 ## Prerequisites
-1. Kubernetes cluster (v1.21 or higher).
+1. Kubernetes cluster (v1.30 or higher).
    If not, you can follow my guide to auto-install Kubernetes cluster [here](ansible/README.md).
 2. Helm installed on your local machine.
 3. `kubectl` CLI configured to interact with the Kubernetes cluster.
