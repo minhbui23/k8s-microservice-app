@@ -33,13 +33,13 @@ This project deploys a multi-service application on a Kubernetes cluster. The ap
 ```
 ### Step 2: Deploy Application
 ```bash
-    kubectl apply -f k8s/manifests/app/auth-api/.
-    kubectl apply -f k8s/manifests/app/frontend/.
-    kubectl apply -f k8s/manifests/app/redis-queue/.
-    kubectl apply -f k8s/manifests/app/todos-api/.
-    kubectl apply -f k8s/manifests/app/user-api/.
-    kubectl apply -f k8s/manifests/app/log-message-processor/.
-    kubectl apply -f k8s/manifests/app/dns-network-policy/.
+    kubectl apply -f ./manifests/app/auth-api/.
+    kubectl apply -f ./manifests/app/frontend/.
+    kubectl apply -f ./manifests/app/redis-queue/.
+    kubectl apply -f ./manifests/app/todos-api/.
+    kubectl apply -f ./manifests/app/user-api/.
+    kubectl apply -f ./manifests/app/log-message-processor/.
+    kubectl apply -f ./manifests/app/dns-network-policy/.
 ```
 ### Step 3: Verity Deployment
 ```bash
