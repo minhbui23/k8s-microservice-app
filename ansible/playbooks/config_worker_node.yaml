@@ -8,3 +8,19 @@
 
     - name: Execute kubeadm join command
       shell: "{{ join_command.stdout }}"
+
+- hosts: k3s-master-02
+  become: yes
+  tasks:    
+    - name: Extract kubeadm join command
+      shell: tail -n 2 /tmp/init_output.txt
+      register: join_command
+
+    - name: Modify join command to include --control-plane
+      set_fact:
+        join_command_control_plane: "{{ join_command.stdout }} --control-plane"
+
+    - name: Execute kubeadm join command
+      shell: "{{ join_command_control_plane }}"
+
+

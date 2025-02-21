@@ -1,6 +1,16 @@
 [kubernetes-master-nodes]
-kubernetes-master ansible_host=10.104.0.2
+k3s-master-01 ansible_host=192.168.10.111
+k3s-master-02 ansible_host=192.168.10.112
 
 [kubernetes-worker-nodes]
-kubernetes-worker1 ansible_host=10.104.0.3
-kubernetes-worker2 ansible_host=10.104.0.4
+k3s-worker-01 ansible_host=192.168.10.121
+k3s-worker-02 ansible_host=192.168.10.122
+k3s-worker-03 ansible_host=192.168.10.123
+
+[kubernetes-cluster:children]
+kubernetes-master-nodes
+kubernetes-worker-nodes
+
+[kubernetes-cluster:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/id_ed25519

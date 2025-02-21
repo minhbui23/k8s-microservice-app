@@ -1,0 +1,30 @@
+---
+- name: Setup SSH key-based authentication for Kubernetes Cluster
+  hosts: "{{ groups['kubernetes-master-nodes'][0] }}"
+  become: yes
+  tasks:
+  
+    - name: Generate SSH key on the primary master node for ubuntu user
+      command: ssh-keygen -t rsa -b 4096 -f /home/ubuntu/.ssh/id_rsa -N ""
+      args:
+        creates: /home/ubuntu/.ssh/id_rsa
+      become_user: ubuntu
+
+    - name: Fetch the generated SSH public key
+      command: cat /home/ubuntu/.ssh/id_rsa.pub
+      register: ssh_public_key
+      become_user: ubuntu
+
+    - name: Distribute SSH key to all nodes for ubuntu user
+      authorized_key:
+        user: ubuntu
+        key: "{{ ssh_public_key.stdout }}"
+      delegate_to: "{{ item }}"
+      loop: "{{ groups['kubernetes-master-nodes'] + groups['kubernetes-worker-nodes'] }}"
+
+    - name: Accept SSH fingerprints into known_hosts
+      shell: ssh-keyscan -H {{ hostvars[item]['ansible_host'] }} >> /home/ubuntu/.ssh/known_hosts
+      delegate_to: "{{ groups['kubernetes-master-nodes'][0] }}"
+      loop: "{{ groups['kubernetes-master-nodes'] + groups['kubernetes-worker-nodes'] }}"
+      become_user: ubuntu
+      changed_when: false

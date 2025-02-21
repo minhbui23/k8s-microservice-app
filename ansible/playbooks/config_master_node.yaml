@@ -1,5 +1,5 @@
 ---
-- hosts: kubernetes-master-nodes
+- hosts: k3s-master-01
   become: yes
   vars_files:
     - env_variables
@@ -13,17 +13,17 @@
         content: "{{ init_output.stdout }}"
         dest: /tmp/init_output.txt
 
-    - name: Copy init file to node1
-      shell: scp  /tmp/init_output.txt  minhbui@172.16.1.135:/tmp/init_output.txt 
-
-    - name: Copy init file to node2
-      shell: scp  /tmp/init_output.txt  minhbui@172.16.1.137:/tmp/init_output.txt 
+    - name: Copy init file to other nodes
+      shell: scp /tmp/init_output.txt ubuntu@{{ hostvars[item].ansible_host }}:/tmp/init_output.txt
+      loop: "{{ groups['kubernetes-worker-nodes'] + groups['kubernetes-master-nodes'] | difference(groups['kubernetes-master-nodes'][0:1])  }}"
+      tags: copy_init
 
     - name: Configure kubectl for the master node
       shell: |
         mkdir -p $HOME/.kube
         cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
         chown $(id -u):$(id -g) $HOME/.kube/config
+      
 
     - name: Deploy Flannel CNI
       command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
